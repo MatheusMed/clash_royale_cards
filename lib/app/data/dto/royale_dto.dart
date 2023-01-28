@@ -1,13 +1,15 @@
+import 'dart:convert';
+
 import 'package:clash_royale_cards/app/data/dto/icon_urls_dto.dart';
 import 'package:clash_royale_cards/app/domain/entities/royale_entity.dart';
 
 extension RoyaleDto on RoyaleEntity {
-  Map<String, dynamic> toMap() {
+  static Map<String, dynamic> toMap(RoyaleEntity royaleEntity) {
     return <String, dynamic>{
-      'name': name,
-      'id': id,
-      'maxLevel': maxLevel,
-      'iconUrls': iconUrls?.toMap(),
+      'name': royaleEntity.name,
+      'id': royaleEntity.id,
+      'maxLevel': royaleEntity.maxLevel,
+      'iconUrls': royaleEntity.iconUrls?.toMap(),
     };
   }
 
@@ -21,4 +23,15 @@ extension RoyaleDto on RoyaleEntity {
           : null,
     );
   }
+
+  static String encode(List<RoyaleEntity> musics) => json.encode(
+        musics
+            .map<Map<String, dynamic>>((music) => RoyaleDto.toMap(music))
+            .toList(),
+      );
+
+  static List<RoyaleEntity> decode(String musics) =>
+      (json.decode(musics) as List<dynamic>)
+          .map<RoyaleEntity>((item) => RoyaleDto.fromMap(item))
+          .toList();
 }
