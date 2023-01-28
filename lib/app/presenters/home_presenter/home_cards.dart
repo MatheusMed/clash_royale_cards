@@ -50,33 +50,36 @@ class _HomeCardsState extends State<HomeCards> {
         appBar: AppBar(
           title: const Text('Cards'),
         ),
-        body: BlocBuilder<HomeBloc, HomeState>(
-          bloc: controller,
-          builder: (context, state) {
-            switch (state.statusHome) {
-              case StatusHome.initial:
-                return const SizedBox();
-              case StatusHome.loading:
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              case StatusHome.sucess:
-                return ListViewHome(state.listRoyale!);
-              case StatusHome.failure:
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Text('Falha ao buscar cartas'),
-                      FilledButton(
-                          onPressed: () => controller.getCardsClashRoyale(),
-                          child: const Text('Tentar Novamente')),
-                    ],
-                  ),
-                );
-            }
-          },
+        body: RefreshIndicator(
+          onRefresh: () => controller.getCardsClashRoyale(),
+          child: BlocBuilder<HomeBloc, HomeState>(
+            bloc: controller,
+            builder: (context, state) {
+              switch (state.statusHome) {
+                case StatusHome.initial:
+                  return const SizedBox();
+                case StatusHome.loading:
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                case StatusHome.sucess:
+                  return ListViewHome(state.listRoyale!);
+                case StatusHome.failure:
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Text('Falha ao buscar cartas'),
+                        FilledButton(
+                            onPressed: () => controller.getCardsClashRoyale(),
+                            child: const Text('Tentar Novamente')),
+                      ],
+                    ),
+                  );
+              }
+            },
+          ),
         ),
       ),
     );

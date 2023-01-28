@@ -1,4 +1,5 @@
 import 'package:clash_royale_cards/app/domain/entities/royale_entity.dart';
+import 'package:clash_royale_cards/app/presenters/details_presenter/details_card.dart';
 import 'package:flutter/material.dart';
 
 class ListViewHome extends StatelessWidget {
@@ -13,6 +14,11 @@ class ListViewHome extends StatelessWidget {
       itemBuilder: (context, index) {
         final item = listaRoyale[index];
         return ListTile(
+          onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DetailsCard(item),
+              )),
           title: Text(item.name!),
           trailing: Image.network(item.iconUrls!.medium!),
         );
